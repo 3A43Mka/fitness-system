@@ -28,7 +28,7 @@ class VisitorController {
     try {
       const {email, phone, age, weight} = req.body;
       const {visitorId} = req.params;
-      const visitor = await Visitor.findOne({id: visitorId});
+      const visitor = await Visitor.findOne({ where: {id: visitorId}});
       if (visitor.visitorDetailId) {
         const updatedDetails = await VisitorDetails.update({email, phone, age, weight}, {where: {id: visitor.visitorDetailId}, returning: true});
         return res.json(updatedDetails);
@@ -49,8 +49,8 @@ class VisitorController {
       if (balance < 1) {
         return res.status(400).json({error: "Balance should be positive"});
       }
-      const visitor = await Visitor.findOne({id: visitorId});
-      const visitorDetails = await VisitorDetails.findOne({id: visitor.visitorDetailId});
+      const visitor = await Visitor.findOne({where: {id: visitorId}});
+      const visitorDetails = await VisitorDetails.findOne({ where: {id: visitor.visitorDetailId}});
       const newBalance = +visitorDetails.balance + +balance;
       const updatedVisitorDetails = await VisitorDetails.update({balance: newBalance}, {where: {id: visitor.visitorDetailId}, returning: true})
       return res.json(updatedVisitorDetails);
@@ -63,8 +63,8 @@ class VisitorController {
   async goToTraining(req, res) {
     try {
       const {visitorId} = req.params;
-      const visitor = await Visitor.findOne({id: visitorId});
-      const visitorDetails = await VisitorDetails.findOne({id: visitor.visitorDetailId});
+      const visitor = await Visitor.findOne({where: {id: visitorId} });
+      const visitorDetails = await VisitorDetails.findOne({where: {id: visitor.visitorDetailId} });
       if (visitorDetails.balance < 1) {
         return res.status(400).json({error: "You don't have any trainings left on  your balance!"});
       }
@@ -75,15 +75,6 @@ class VisitorController {
     } catch (e) {
       res.status(500).json({error: e});
     }
-  }
-
-  async getAll(req, res) {
-    console.log("ABAMA")
-    return res.json("acasddssaad")
-  }
-
-  async getById(req, res) {
-
   }
 
 }

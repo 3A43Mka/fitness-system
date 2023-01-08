@@ -11,14 +11,6 @@ class AdministratorController {
     }
   }
 
-  async getAll(req, res) {
-    console.log("ABAMA")
-    return res.json("acasddssaad")
-  }
-
-  async getById(req, res) {
-
-  }
 
 }
 
